@@ -1,36 +1,75 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Trend Mart
 
-## Getting Started
+> A web application designed for seamless online shopping, allowing users to browse and purchase products, manage their cart, and track their orders. This e-commerce platform is built with React, Redux, JavaScript, and CSS, offering a user-friendly interface and a robust system for managing product listings, user accounts, and transactions.
 
-First, run the development server:
+## Live Demo
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+[Live Demo](https://trend-mart.vercel.app/)
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Project Status
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+This project is currently in development. It's not ready for use yet, but I plan to make it available as soon as possible.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+This project is currently in development. Users can add tasks and see visual data representation. Functionality to update and delete tasks is still in progress.
 
-## Learn More
+## Features
 
-To learn more about Next.js, take a look at the following resources:
+- Browse Products: View a wide range of products with detailed descriptions and images.
+- Add to Cart: Easily add products to the shopping cart for quick checkout.
+- Manage Cart: View, update, and remove items from the cart.
+- Secure Checkout: Complete purchases with a secure and user-friendly checkout process.
+- Order Tracking: Track the status of orders in real-time.
+- User Accounts: Create and manage user accounts for personalized shopping experiences.
+- Responsive Design: Optimized for both mobile and desktop devices, ensuring a seamless shopping experience across all screen sizes.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Built With
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+- Next js
+- Javascript
+- CSS
+- Bootstrap
+- Tailwind
+- GIT and Github used
 
-## Deploy on Vercel
+To get a local copy up and running follow these simple example steps.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Prerequisites
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+- Have Vscode installed
+- Liveserver
+
+### Installation and Setup Instructions
+
+Clone down this repository. You will need `node` and `npm` installed globally on your machine.
+
+Installation:
+
+`npm install`
+
+To Run Test Suite:
+
+`npm test`
+
+To Start Server:
+
+`npm run dev`
+
+To Visit App:
+
+`localhost:3000/`
+
+## Author
+
+👤 **Author**
+
+- GitHub: [@githubhandle](https://github.com/tobidechamp15)
+- Twitter: [@twitterhandle](https://twitter.com/tobidechamp15)
+- LinkedIn: [LinkedIn](https://www.linkedin.com/in/tobiloba-oluwadare-4bba71249/)
+
+## 🤝 Contributing
+
+Contributions, issues, and feature requests are welcome!
+
+## Contact
+
+You can reach out to me via [email](tobidechamp15@gmail.com) or [Twitter](https://twitter.com/tobidechamp15).
