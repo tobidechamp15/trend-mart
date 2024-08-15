@@ -8,7 +8,6 @@
         "endOfLine": "auto"
       }
     ],
-    "import/extensions": "off",
     "react/jsx-props-no-spreading": "off",
     "react/react-in-jsx-scope": "off",
     "react/function-component-definition": "off",
@@ -16,6 +15,16 @@
     "react/destructuring-assignment": "off",
     "import/prefer-default-export": "off",
     "no-unused-vars": "warn",
-    "no-console": "warn"
+    "no-console": "warn",
+    "import/no-unresolved": "off",
+    "import/extensions": "off"
+  },
+  "settings": {
+    "import/resolver": {
+      "node": {
+        "paths": ["."],
+        "extensions": [".js", ".jsx", ".ts", ".tsx"]
+      }
+    }
   }
 }
