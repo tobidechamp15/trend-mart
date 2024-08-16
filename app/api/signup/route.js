@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import bcrypt from 'bcryptjs';
 import { connectMongoDB } from '@/lib/mongodb';
 import User from '@/models/user';
 
@@ -6,9 +7,11 @@ export async function POST(req) {
   try {
     // Extracting data from the request body
     const { name, userName, password, email } = await req.json();
+    // Hashing the password
+    const hashedPassword = await bcrypt.hash(password, 10);
 
     await connectMongoDB();
-    await User.create({ name, userName, email, password });
+    await User.create({ name, userName, email, password: hashedPassword });
 
     // Define the response message with a status code
     const response = {
