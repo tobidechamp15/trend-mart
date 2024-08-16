@@ -3,8 +3,12 @@ import { useState } from 'react';
 import Image from 'next/image';
 import authImg from '/public/assets/authImg.svg';
 import logo from '/public/assets/Logo.svg';
+import { useRouter } from 'next/navigation';
+import { getServerSession } from 'next-auth';
+import { redirect } from 'next/navigation';
+import { authOptions } from '../api/auth/[...nextauth]/route';
 
-export default function Signup() {
+export default async function Signup() {
   const [name, setName] = useState('');
   const [userName, setUserName] = useState('');
   const [email, setEmail] = useState('');
@@ -14,6 +18,12 @@ export default function Signup() {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const [loading, setLoading] = useState(false); // New loading state
+
+  const router = useRouter();
+
+  const session = await getServerSession(authOptions);
+
+  if (session) redirect('/home');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -59,7 +69,10 @@ export default function Signup() {
         setError(null);
         // Display success message or handle post-signup logic
         setSuccess('Signup successful!');
+
         // Redirect to a different page if necessary
+
+        router.push('/login');
       } else {
         // setError(data.message || 'Signup failed! Please try again.');
       }

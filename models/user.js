@@ -7,6 +7,10 @@ const userSchema = new Schema(
       type: String,
       required: true, // Ensures that the name field is required
     },
+    userName: {
+      type: String,
+      required: true, // Ensures that the name field is required
+    },
     email: {
       type: String,
       required: true, // Ensures that the email field is required

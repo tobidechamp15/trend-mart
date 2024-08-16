@@ -1,6 +1,7 @@
 {
   "extends": ["next/core-web-vitals", "airbnb", "plugin:prettier/recommended"],
   "rules": {
+    "no-underscore-dangle": ["error", { "allow": ["_id"] }],
     "prettier/prettier": [
       "error",
       {
