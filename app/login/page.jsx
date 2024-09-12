@@ -3,14 +3,15 @@ import { useState } from 'react';
 import Image from 'next/image';
 import logo from '/public/assets/Logo.svg';
 import authImg from '/public/assets/authImg.svg';
-import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
+import { signIn } from 'next-auth/react';
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+  const [loader, setLoader] = useState('');
   const router = useRouter();
 
   const handleSubmit = async (e) => {
@@ -22,20 +23,16 @@ const Login = () => {
         password,
         redirect: false,
       });
-      console.log('Sign-in response:', res);
 
       if (res.error) {
-        setError('Invalid  Credentials');
-      } else {
-        console.log(res);
-        router.push('/home'); // Redirect to home page
+        setError('Invalid Credentials');
+        return;
       }
-    } catch (error) {
-      console.error('Sign-in error:', error);
-      setError('An unexpected error occurred. Please try again later.');
-    }
+      setSuccess('Login Successful');
+      setLoader(true);
+      router.replace('home');
+    } catch (error) {}
   };
-
   return (
     <div className="flex w-full bg-white text-black overflow-auto">
       <div className="w-1/2 h-screen bg-[#c7e0e5] hidden md:flex justify-evenly items-center flex-col ">
@@ -45,7 +42,7 @@ const Login = () => {
         onSubmit={handleSubmit}
         className="flex gap-[32px] items-center flex-col w-full h-screen pt-[100px]"
       >
-        {/* {error && (
+        {error && (
           <div className="error-message">
             <p>{error}</p>
           </div>
@@ -55,15 +52,15 @@ const Login = () => {
             <p>{success}</p>
           </div>
         )}
-        {loading && (
+        {loader && (
           <div className="absolute inset-0 flex items-center justify-center bg-white z-10">
-            <div class="three-body">
-              <div class="three-body__dot"></div>
-              <div class="three-body__dot"></div>
-              <div class="three-body__dot"></div>
+            <div className="three-body">
+              <div className="three-body__dot"></div>
+              <div className="three-body__dot"></div>
+              <div className="three-body__dot"></div>
             </div>
           </div>
-        )} */}
+        )}
         <div className="flex flex-col gap-3">
           <span className="font-medium text-[40px]">Sign In</span>
           <span className="text-[#141718] text-[16px]">
@@ -103,7 +100,7 @@ const Login = () => {
           type="submit"
           className="bg-black text-white py-[15px] px-[30px] rounded-md"
         >
-          Signup
+          Sign In
         </button>
       </form>
     </div>

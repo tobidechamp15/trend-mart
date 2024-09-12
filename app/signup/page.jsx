@@ -3,12 +3,8 @@ import { useState } from 'react';
 import Image from 'next/image';
 import authImg from '/public/assets/authImg.svg';
 import logo from '/public/assets/Logo.svg';
-import { useRouter } from 'next/navigation';
-import { getServerSession } from 'next-auth';
-import { redirect } from 'next/navigation';
-import { authOptions } from '../api/auth/[...nextauth]/route';
 
-export default async function Signup() {
+export default function Signup() {
   const [name, setName] = useState('');
   const [userName, setUserName] = useState('');
   const [email, setEmail] = useState('');
@@ -17,43 +13,23 @@ export default async function Signup() {
   const [agree, setAgree] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
-  const [loading, setLoading] = useState(false); // New loading state
-
-  const router = useRouter();
-
-  const session = await getServerSession(authOptions);
-
-  if (session) redirect('/home');
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (password !== confirmPassword) {
       setError('Passwords do not match');
+      console.log('pass do not match');
       return;
     }
 
-    setLoading(true); // Start loading
+    setLoading(true);
 
-    // Call the signup API or handle form data
     try {
-      setError(null); // Reset previous errors
-      setSuccess(null); // Reset previous errors
-
-      const resUserExists = await fetch('api/userExists', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email }),
-      });
-
-      const { user } = await resUserExists.json();
-
-      if (user) {
-        setError('User already exists');
-      }
-
-      const res = await fetch('/api/signup', {
+      setError('');
+      setSuccess('');
+      console.log(name, userName, email);
+      const response = await fetch('/api/signup', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -61,27 +37,22 @@ export default async function Signup() {
         body: JSON.stringify({ name, userName, email, password }),
       });
 
-      const data = await res.json();
+      const data = await response.json();
+      setLoading(false);
 
-      setLoading(false); // End loading
-
-      if (res.ok) {
-        setError(null);
-        // Display success message or handle post-signup logic
+      if (response.ok) {
+        setError('');
         setSuccess('Signup successful!');
-
-        // Redirect to a different page if necessary
-
-        router.push('/login');
       } else {
-        // setError(data.message || 'Signup failed! Please try again.');
+        setError(data.error || 'Signup failed! Please try again.');
       }
     } catch (error) {
-      setLoading(false); // End loading if there's an error
-      setError('Something went wrong! Please try again later.');
-      console.error('Signup error:', error);
+      setLoading(false);
+      console.log(error);
+      setError('A user with this email already exists.');
     }
   };
+
   return (
     <div className="flex w-full bg-white text-black overflow-auto">
       <div className="w-1/2 h-screen bg-[#c7e0e5] hidden md:flex justify-evenly items-center flex-col ">
@@ -89,6 +60,7 @@ export default async function Signup() {
       </div>
       <form
         onSubmit={handleSubmit}
+        action="#"
         className="flex gap-[32px] items-center flex-col w-full h-screen pt-[100px]"
       >
         {error && (
@@ -97,16 +69,16 @@ export default async function Signup() {
           </div>
         )}
         {success && (
-          <div className="success-message">
-            <p>{success}</p>
+          <div className="success-message bg-success">
+            <p className="m-0">{success}</p>
           </div>
         )}
         {loading && (
           <div className="absolute inset-0 flex items-center justify-center bg-white z-10">
-            <div class="three-body">
-              <div class="three-body__dot"></div>
-              <div class="three-body__dot"></div>
-              <div class="three-body__dot"></div>
+            <div className="three-body">
+              <div className="three-body__dot"></div>
+              <div className="three-body__dot"></div>
+              <div className="three-body__dot"></div>
             </div>
           </div>
         )}
@@ -126,6 +98,7 @@ export default async function Signup() {
             onChange={(e) => setName(e.target.value)}
             required
             className="input"
+            aria-label="Name"
           />
           <span className="highlight"></span>
           <span className="bar"></span>
@@ -185,7 +158,7 @@ export default async function Signup() {
             <input
               name="dummy"
               type="checkbox"
-              value={agree}
+              checked={agree}
               required
               onChange={(e) => setAgree(e.target.checked)}
             />

@@ -1,19 +1,20 @@
 import PropTypes from 'prop-types';
-import { Inter } from 'next/font/google';
 import './globals.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { connectMongoDB } from '@/lib/mongodb';
 import { AuthProvider } from './Providers';
-
-const inter = Inter({ subsets: ['latin'] });
 
 export const metadata = {
   title: 'Trend Mart',
   description: 'Online Shopping for Electronics, Fashion, Home, Beauty & Sport',
 };
 
-function RootLayout({ children }) {
+async function RootLayout({ children }) {
+  const conn = await connectMongoDB();
+  console.log(conn);
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body>
         <AuthProvider>{children}</AuthProvider>
       </body>
     </html>
