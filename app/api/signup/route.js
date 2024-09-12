@@ -1,30 +1,30 @@
-import { NextResponse } from 'next/server';
-import bcrypt from 'bcryptjs';
 import { connectMongoDB } from '@/lib/mongodb';
-import User from '@/models/user';
+import { createUser } from '@/queries/users';
+import bcrypt from 'bcryptjs';
+import { NextResponse } from 'next/server';
 
-export async function POST(req) {
+export const POST = async (request) => {
+  const { name, userName, email, password } = await request.json();
+
+  // Connect to MongoDB
+  await connectMongoDB();
+
+  // Hash the password
+  const hashedPassword = await bcrypt.hash(password, 12); // Increased salt rounds for better security
+
+  // Create new user object
+  const newUser = {
+    name,
+    userName,
+    email,
+    password: hashedPassword,
+  };
   try {
-    // Extracting data from the request body
-    const { name, userName, password, email } = await req.json();
-    // Hashing the password
-    const hashedPassword = await bcrypt.hash(password, 10);
-
-    await connectMongoDB();
-    await User.create({ name, userName, email, password: hashedPassword });
-
-    // Define the response message with a status code
-    const response = {
-      message: `User ${name} with email ${email} has been successfully registered.`,
-    };
-
-    // Return the response message with status 201
-    return NextResponse.json(response, { status: 201 });
+    // Create user in the database
+    const result = await createUser(newUser);
+    return new Response(JSON.stringify(result), { status: 200 });
   } catch (error) {
-    // Handle any errors that occur during the process
-    return NextResponse.json(
-      { error: 'An error occurred while registering the user.' },
-      { status: 500 },
-    );
+    console.error('Error during user signup:', error);
+    return new NextResponse('Error during user signup:', { status: 500 });
   }
-}
+};

@@ -1,52 +1,76 @@
+import { connectMongoDB } from '@/lib/mongodb';
+import User from '@/models/user';
 import NextAuth from 'next-auth/next';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import bcrypt from 'bcryptjs';
-import User from '@/models/user';
-import { connectMongoDB } from '@/lib/mongodb';
 
-export const authOptions = {
+const authOptions = {
   providers: [
     CredentialsProvider({
       name: 'credentials',
-      credentials: {
-        email: { label: 'Email', type: 'text' },
-        password: { label: 'Password', type: 'password' },
-      },
+      credentials: {},
       async authorize(credentials) {
         const { email, password } = credentials;
         try {
-          await connectMongoDB(); // Ensure MongoDB connection
-
-          // Retrieve the user from the database
+          await connectMongoDB();
           const user = await User.findOne({ email });
+
           if (!user) {
-            throw new Error('No user found with this email'); // User not found
+            return null;
           }
 
-          // Check if the password matches
-          const passwordsMatch = await bcrypt.compare(password, user.password);
-          if (!passwordsMatch) {
-            throw new Error('Invalid password'); // Incorrect password
+          const matchedPassword = await bcrypt.compare(password, user.password);
+          if (!matchedPassword) {
+            return null;
           }
 
+          // Returning the minimal user object
           return {
             id: user._id,
-            email: user.email,
-            name: user.name,
-            userName: user.userName,
+            email: user.email, // Only returning email and id for authorization
+            userName: user.userName, // Only returning email and id for authorization
           };
         } catch (error) {
-          throw new Error('Authentication failed'); // Return error if any
+          console.log(error);
+          return null;
         }
       },
     }),
   ],
   session: {
-    strategy: 'jwt',
+    strategy: 'jwt', // Using JWT strategy for session handling
   },
   secret: process.env.NEXTAUTH_SECRET,
   pages: {
     signIn: '/login',
+  },
+  callbacks: {
+    async jwt({ token, user }) {
+      // When user signs in, add user ID to the token
+      if (user) {
+        token.id = user.id;
+      }
+      return token;
+    },
+    async session({ session, token }) {
+      // Connect to MongoDB to fetch the user's full data every time session is accessed
+      try {
+        await connectMongoDB();
+        const user = await User.findById(token.id);
+
+        if (user) {
+          // Attach full user data to session
+          session.user.id = user._id;
+          session.user.name = user.name;
+          session.user.email = user.email;
+          session.user.username = user.userName; // Assuming there's a 'username' field
+        }
+      } catch (error) {
+        console.log('Error fetching user from DB in session callback:', error);
+      }
+
+      return session;
+    },
   },
 };
 
