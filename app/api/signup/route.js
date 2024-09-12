@@ -1,7 +1,7 @@
-import { connectMongoDB } from '@/lib/mongodb';
-import { createUser } from '@/queries/users';
 import bcrypt from 'bcryptjs';
 import { NextResponse } from 'next/server';
+import { connectMongoDB } from '@/lib/mongodb';
+import { createUser } from '@/queries/users';
 
 export const POST = async (request) => {
   const { name, userName, email, password } = await request.json();

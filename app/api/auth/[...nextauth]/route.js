@@ -1,8 +1,8 @@
-import { connectMongoDB } from '@/lib/mongodb';
-import User from '@/models/user';
 import NextAuth from 'next-auth/next';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import bcrypt from 'bcryptjs';
+import User from '@/models/user';
+import { connectMongoDB } from '@/lib/mongodb';
 
 const authOptions = {
   providers: [
@@ -31,7 +31,7 @@ const authOptions = {
             userName: user.userName, // Only returning email and id for authorization
           };
         } catch (error) {
-          console.log(error);
+          console.error('Error in authorize callback:', error);
           return null;
         }
       },
@@ -66,7 +66,10 @@ const authOptions = {
           session.user.username = user.userName; // Assuming there's a 'username' field
         }
       } catch (error) {
-        console.log('Error fetching user from DB in session callback:', error);
+        console.error(
+          'Error fetching user from DB in session callback:',
+          error,
+        );
       }
 
       return session;

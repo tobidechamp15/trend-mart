@@ -3,7 +3,6 @@ import './globals.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { connectMongoDB } from '@/lib/mongodb';
 import { AuthProvider } from './Providers';
-
 export const metadata = {
   title: 'Trend Mart',
   description: 'Online Shopping for Electronics, Fashion, Home, Beauty & Sport',
