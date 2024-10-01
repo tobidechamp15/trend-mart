@@ -1,8 +1,9 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { signOut, useSession } from 'next-auth/react';
+import { useSession } from 'next-auth/react';
 import fetchProductsFromAPI from '@/utils/fetchProducts';
+import Signout from './Signout';
 
 const UserInfo = () => {
   const [products, setProducts] = useState([]);
@@ -37,12 +38,7 @@ const UserInfo = () => {
         ) : (
           <span>Please log in.</span>
         )}
-        <button
-          className="btn btn-outline-danger fixed top-0 right-0 m-3"
-          onClick={() => signOut()}
-        >
-          Sign Out
-        </button>
+        <Signout />
       </section>
       <section>
         <h2>Product List</h2>
