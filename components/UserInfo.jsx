@@ -18,7 +18,7 @@ const UserInfo = () => {
       setIsLoading(true); // Set loading to true before fetching
       try {
         const data = await fetchProductsFromAPI();
-        console.log(data, 'data fro api');
+        console.log(data, 'data from api');
         setProducts(data);
       } catch (error) {
         console.error('Error fetching products:', error);
