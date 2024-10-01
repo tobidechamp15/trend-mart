@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
 import fetchProductsFromAPI from '@/utils/fetchProducts';
-import Signout from './Signout';
+import Signout from './SignOut';
 
 const UserInfo = () => {
   const [products, setProducts] = useState([]);
