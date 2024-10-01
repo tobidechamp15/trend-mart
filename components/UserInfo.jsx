@@ -79,7 +79,7 @@ const UserInfo = () => {
                 <p className="text-gray-700">
                   Rating:{' '}
                   <span className="font-bold text-gray-900">
-                    {product.rating.rate}
+                    {product.rating.rate}{' '}
                   </span>
                   ({product.rating.count} reviews)
                 </p>

@@ -61,7 +61,7 @@ const Login = () => {
             </div>
           </div>
         )}
-        <div className="flex flex-col gap-3">
+        <div className="flex flex-col gap-3 mb-5">
           <span className="font-medium text-[40px]">Sign In</span>
           <span className="text-[#141718] text-[16px]">
             Do not have an account yet{' '}
