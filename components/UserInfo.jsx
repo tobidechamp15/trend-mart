@@ -49,7 +49,8 @@ const UserInfo = () => {
             {products.map((product, index) => (
               <div
                 key={index}
-                className="border border-gray-300 bg-white rounded-lg shadow-md p-6 transition-transform duration-300 hover:scale-105 hover:shadow-lg"
+                className="border border-gray-300 bg-white rounded-lg shadow-md p-6 transition-transform duration-300 hover:scale-105 hover:shadow-lg cursor-pointer"
+                onClick={handle}
               >
                 <img
                   src={product.image}
