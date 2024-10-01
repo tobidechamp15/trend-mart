@@ -1,4 +1,6 @@
-import Image from 'next/image';
+"use client ";
+import Image from "next/image";
+import Link from "next/link";
 
 export default function Home() {
   return (
@@ -9,12 +11,11 @@ export default function Home() {
         <p className="text-lg mb-8">
           Discover the best products for your daily needs at unbeatable prices.
         </p>
-        <a
-          href="#shop"
-          className="bg-white text-blue-600 font-semibold py-3 px-8 rounded-lg hover:bg-gray-200 transition duration-300"
-        >
-          Shop Now
-        </a>
+        <Link href="/home">
+          <a className="bg-white text-blue-600 font-semibold py-3 px-8 rounded-lg hover:bg-gray-200 transition duration-300">
+            Shop Now
+          </a>
+        </Link>
       </section>
 
       {/* Features Section */}
@@ -107,7 +108,7 @@ export default function Home() {
             className="text-gray-400 hover:text-white transition duration-200"
           >
             Privacy Policy
-          </a>{' '}
+          </a>{" "}
           |
           <a
             href="#"
