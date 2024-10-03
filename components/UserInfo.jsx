@@ -29,10 +29,13 @@ const UserInfo = () => {
 
     fetchProducts();
   }, []);
+
+  const handle = () => {
+    return;
+  };
   return (
     <>
       <section>
-        <h2>User Information</h2>
         {session ? (
           <span>{session.user.name}</span>
         ) : (
@@ -40,46 +43,56 @@ const UserInfo = () => {
         )}
         <Signout />
       </section>
-      <section>
+      <section className="flex items-center justify-center  flex-col">
         <h2>Product List</h2>
         {isLoading ? (
           <p>Loading products...</p>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 p-6 bg-white">
+          <div className="flex flex-wrap justify-center gap-4 p-6 bg-gray-50">
             {products.map((product, index) => (
               <div
                 key={index}
-                className="border border-gray-300 bg-white rounded-lg shadow-md p-6 transition-transform duration-300 hover:scale-105 hover:shadow-lg cursor-pointer"
-                onClick={handle}
+                className="border border-blue-200 bg-white rounded-lg shadow-md p-4 transition-transform duration-300 hover:scale-105 hover:shadow-lg cursor-pointer flex flex-col items-center"
+                style={{ maxWidth: '220px' }} // Smaller width for compact look
               >
                 <img
                   src={product.image}
                   alt={product.title}
-                  className="w-full h-48 object-cover rounded-lg mb-4 transition-opacity duration-300 hover:opacity-90"
+                  className="w-20 h-20 object-contain rounded-lg mb-3 transition-opacity duration-300 hover:opacity-90"
                 />
-                <h3 className="text-2xl font-semibold text-gray-900 mb-2">
-                  {product.title}
-                </h3>
-                <p className="text-gray-700 mb-2">
-                  Price:{' '}
-                  <span className="font-bold text-gray-900">
-                    ${product.price}
-                  </span>
-                </p>
-                <p className="text-gray-600 mb-4">{product.description}</p>
-                <p className="text-gray-700 mb-2">
-                  Category:{' '}
-                  <span className="font-bold text-gray-900">
-                    {product.category}
-                  </span>
-                </p>
-                <p className="text-gray-700">
-                  Rating:{' '}
-                  <span className="font-bold text-gray-900">
-                    {product.rating.rate}{' '}
-                  </span>
-                  ({product.rating.count} reviews)
-                </p>
+                <div className="flex flex-col items-center text-center">
+                  <h3 className="text-base font-semibold text-gray-800 mb-1">
+                    {product.title}
+                  </h3>
+                  <p className="text-gray-700 mb-2 text-sm">
+                    Price:
+                    <span className="font-bold text-blue-600">
+                      ${product.price}
+                    </span>
+                  </p>
+                  <p className="text-gray-600 mb-2 text-xs">
+                    {product.description.substring(0, 50)}...
+                  </p>
+                  <p className="text-gray-600 mb-1 text-xs">
+                    Category:
+                    <span className="font-bold text-blue-600">
+                      {product.category}
+                    </span>
+                  </p>
+                  <p className="text-gray-600 mb-2 text-xs">
+                    Rating:
+                    <span className="font-bold text-blue-600">
+                      {product.rating.rate} ({product.rating.count} reviews)
+                    </span>
+                  </p>
+
+                  <button
+                    className="bg-blue-500 text-white text-sm font-medium py-2 px-4 rounded-md mt-3 hover:bg-blue-600 transition duration-300"
+                    onClick={() => handleAddToCart(product)}
+                  >
+                    Add to Cart
+                  </button>
+                </div>
               </div>
             ))}
           </div>

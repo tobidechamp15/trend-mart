@@ -1,4 +1,5 @@
 'use client';
+import Navbar from '@/components/Navbar';
 import UserInfo from '@/components/UserInfo';
 import fetchProductsFromAPI from '@/utils/fetchProducts';
 import React, { useEffect, useState } from 'react';
@@ -25,6 +26,7 @@ const page = () => {
   }, []);
   return (
     <>
+      <Navbar />
       <UserInfo product={products} isLoading={isLoading} />
     </>
   );

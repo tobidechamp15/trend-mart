@@ -305,3 +305,6 @@
   animation: slideIn 0.5s ease-in-out;
   z-index: 50;
 }
+a {
+  text-decoration: none !important;
+}
