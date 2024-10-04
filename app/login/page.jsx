@@ -1,6 +1,8 @@
 'use client';
 import { useState } from 'react';
 import Image from 'next/image';
+import { getSession } from 'next-auth/react';
+
 import logo from '/public/assets/Logo.svg';
 import authImg from '/public/assets/authImg.svg';
 import { useRouter } from 'next/navigation';
@@ -16,6 +18,7 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoader(true);
 
     try {
       const res = await signIn('credentials', {
@@ -28,10 +31,16 @@ const Login = () => {
         setError('Invalid Credentials');
         return;
       }
+      // console.log(res.data);
       setSuccess('Login Successful');
-      setLoader(true);
-      router.replace('home');
-    } catch (error) {}
+      const session = await getSession();
+      console.log('Logged-in User Details:', session.user); // Log user details
+
+      // router.replace('home');
+    } catch (error) {
+      setError('Invalid Credentials');
+      setLoader(false);
+    }
   };
   return (
     <div className="flex w-full bg-white text-black overflow-auto">
