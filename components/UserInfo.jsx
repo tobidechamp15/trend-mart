@@ -3,47 +3,84 @@
 import React, { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
 import fetchProductsFromAPI from '@/utils/fetchProducts';
-import Signout from './SignOut';
+import { useRouter } from 'next/navigation';
 
 const UserInfo = () => {
   const [products, setProducts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  // Default products to an empty array
+  const router = useRouter();
   const { data: session } = useSession();
-  console.log('session', session);
-  console.log(products);
+  // Check if user is authenticated
+  const email = session?.user?.email; // Assuming session holds user data
 
+  console.log(email);
   useEffect(() => {
     const fetchProducts = async () => {
-      setIsLoading(true); // Set loading to true before fetching
+      setIsLoading(true);
       try {
         const data = await fetchProductsFromAPI();
-        console.log(data, 'data from api');
         setProducts(data);
       } catch (error) {
         console.error('Error fetching products:', error);
       } finally {
-        setIsLoading(false); // Set loading to false after fetching
+        setIsLoading(false);
       }
     };
 
     fetchProducts();
   }, []);
 
-  const handle = () => {
-    return;
+  // Function to handle adding a product to the cart
+  const handleAddToCart = async (product) => {
+    // Validate that user is authenticated
+    if (!session || !session.user?.email) {
+      console.error('User is not authenticated');
+      alert('You must be logged in to add products to the cart.');
+      return;
+    }
+
+    // Validate product details
+    if (!product || !product.id) {
+      console.error('Invalid product details:', product);
+      alert('Invalid product details. Please try again.');
+      return;
+    }
+
+    try {
+      const res = await fetch('/api/cart/add', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: session.user.email,
+          productId: product.id, // Ensure product.id is the correct identifier
+          quantity: 1,
+        }),
+      });
+
+      // Handle response and potential errors
+      if (!res.ok) {
+        const errorData = await res.json(); // Read the error body
+        throw new Error(
+          `Failed to add product to cart: ${errorData.error || res.statusText}`,
+        );
+      }
+
+      const data = await res.json();
+      console.log('Product added to cart:', data);
+      alert('Product added to cart successfully!');
+    } catch (error) {
+      console.error('Error adding product to cart:', error.message);
+      alert(
+        'There was an error adding the product to the cart. Please try again.',
+      );
+    }
   };
+
   return (
     <>
-      <section>
-        {session ? (
-          <span>{session.user.name}</span>
-        ) : (
-          <span>Please log in.</span>
-        )}
-        <Signout />
-      </section>
-      <section className="flex items-center justify-center  flex-col">
+      <section className="flex items-center justify-center flex-col">
         <h2>Product List</h2>
         {isLoading ? (
           <p>Loading products...</p>
@@ -53,7 +90,7 @@ const UserInfo = () => {
               <div
                 key={index}
                 className="border border-blue-200 bg-white rounded-lg shadow-md p-4 transition-transform duration-300 hover:scale-105 hover:shadow-lg cursor-pointer flex flex-col items-center"
-                style={{ maxWidth: '220px' }} // Smaller width for compact look
+                style={{ maxWidth: '220px' }}
               >
                 <img
                   src={product.image}
