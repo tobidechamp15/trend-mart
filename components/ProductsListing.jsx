@@ -6,7 +6,7 @@ import fetchProductsFromAPI from "@/utils/fetchProducts";
 import { useRouter } from "next/navigation";
 import Loader from "./Loader";
 
-const UserInfo = () => {
+const ProductsListing = () => {
   const [products, setProducts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -58,6 +58,7 @@ const UserInfo = () => {
           email: session.user.email,
           productId: product.id, // Ensure product.id is the correct identifier
           quantity: 1,
+          price: product.price,
         }),
       });
 
@@ -141,4 +142,4 @@ const UserInfo = () => {
   );
 };
 
-export default UserInfo;
+export default ProductsListing;

@@ -1,11 +1,11 @@
-'use client';
-import Navbar from '@/components/Navbar';
-import UserInfo from '@/components/UserInfo';
-import fetchProductsFromAPI from '@/utils/fetchProducts';
-import React, { useEffect, useState } from 'react';
+"use client";
+import Navbar from "@/components/Navbar";
+import ProductsListing from "@/components/ProductsListing";
+import fetchProductsFromAPI from "@/utils/fetchProducts";
+import React, { useEffect, useState } from "react";
 
 const page = () => {
-  const [products, setProducts] = useState('');
+  const [products, setProducts] = useState("");
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -13,10 +13,10 @@ const page = () => {
       setIsLoading(true); // Set loading to true before fetching
       try {
         const data = await fetchProductsFromAPI();
-        console.log(data, 'data fro api');
+        console.log(data, "data fro api");
         setProducts(data);
       } catch (error) {
-        console.error('Error fetching products:', error);
+        console.error("Error fetching products:", error);
       } finally {
         setIsLoading(false); // Set loading to false after fetching
       }
@@ -27,7 +27,7 @@ const page = () => {
   return (
     <>
       <Navbar />
-      <UserInfo product={products} isLoading={isLoading} />
+      <ProductsListing product={products} isLoadin={isLoading} />
     </>
   );
 };

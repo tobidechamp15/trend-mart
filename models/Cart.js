@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
 const { Schema, models } = mongoose;
 
@@ -7,12 +7,15 @@ const cartSchema = new Schema({
     {
       productId: {
         type: Schema.Types.ObjectId,
-        ref: 'Product', // Reference to the Product model
+        ref: "Product", // Reference to the Product model
         required: true,
       },
       quantity: {
         type: Number,
         default: 1,
+      },
+      price: {
+        type: Number,
       },
     },
   ],
@@ -28,6 +31,6 @@ const cartSchema = new Schema({
 });
 
 // Ensure compatibility with server-side rendering in Next.js 13
-const Cart = models.Cart || mongoose.model('Cart', cartSchema);
+const Cart = models.Cart || mongoose.model("Cart", cartSchema);
 
 export default Cart;

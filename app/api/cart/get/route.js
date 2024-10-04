@@ -5,7 +5,7 @@ import Cart from '@/models/Cart';
 export async function GET(req) {
   await connectMongoDB();
   const { searchParams } = new URL(req.url);
-  const userId = searchParams.get('userId');
+  const email = searchParams.get('email');
 
   try {
     const cart = await Cart.findOne({ userId }).populate('items.productId');
