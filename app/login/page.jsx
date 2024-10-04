@@ -1,19 +1,20 @@
-'use client';
-import { useState } from 'react';
-import Image from 'next/image';
-import { getSession } from 'next-auth/react';
+"use client";
+import { useState } from "react";
+import Image from "next/image";
+import { getSession } from "next-auth/react";
 
-import logo from '/public/assets/Logo.svg';
-import authImg from '/public/assets/authImg.svg';
-import { useRouter } from 'next/navigation';
-import { signIn } from 'next-auth/react';
+import logo from "/public/assets/Logo.svg";
+import authImg from "/public/assets/authImg.svg";
+import { useRouter } from "next/navigation";
+import { signIn } from "next-auth/react";
+import Loader from "@/components/Loader";
 
 const Login = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
-  const [success, setSuccess] = useState('');
-  const [loader, setLoader] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
+  const [loader, setLoader] = useState("");
   const router = useRouter();
 
   const handleSubmit = async (e) => {
@@ -21,24 +22,24 @@ const Login = () => {
     setLoader(true);
 
     try {
-      const res = await signIn('credentials', {
+      const res = await signIn("credentials", {
         email,
         password,
         redirect: false,
       });
 
       if (res.error) {
-        setError('Invalid Credentials');
+        setError("Invalid Credentials");
         return;
       }
       // console.log(res.data);
-      setSuccess('Login Successful');
+      setSuccess("Login Successful");
       const session = await getSession();
-      console.log('Logged-in User Details:', session.user); // Log user details
+      console.log("Logged-in User Details:", session.user); // Log user details
 
       // router.replace('home');
     } catch (error) {
-      setError('Invalid Credentials');
+      setError("Invalid Credentials");
       setLoader(false);
     }
   };
@@ -61,19 +62,11 @@ const Login = () => {
             <p>{success}</p>
           </div>
         )}
-        {loader && (
-          <div className="absolute inset-0 flex items-center justify-center bg-white z-10">
-            <div className="three-body">
-              <div className="three-body__dot"></div>
-              <div className="three-body__dot"></div>
-              <div className="three-body__dot"></div>
-            </div>
-          </div>
-        )}
+        {loader && <Loader />}
         <div className="flex flex-col gap-3 mb-5">
           <span className="font-medium text-[40px]">Sign In</span>
           <span className="text-[#141718] text-[16px]">
-            Do not have an account yet{' '}
+            Do not have an account yet{" "}
             <a href="/signup" className="text-[#155EEF]">
               Sign Up
             </a>

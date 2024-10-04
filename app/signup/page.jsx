@@ -1,38 +1,39 @@
-'use client';
-import { useState } from 'react';
-import Image from 'next/image';
-import authImg from '/public/assets/authImg.svg';
-import logo from '/public/assets/Logo.svg';
+"use client";
+import { useState } from "react";
+import Image from "next/image";
+import authImg from "/public/assets/authImg.svg";
+import logo from "/public/assets/Logo.svg";
+import Loader from "@/components/Loader";
 
 export default function Signup() {
-  const [name, setName] = useState('');
-  const [userName, setUserName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+  const [name, setName] = useState("");
+  const [userName, setUserName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [agree, setAgree] = useState(false);
-  const [error, setError] = useState('');
-  const [success, setSuccess] = useState('');
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (password !== confirmPassword) {
-      setError('Passwords do not match');
-      console.log('pass do not match');
+      setError("Passwords do not match");
+      console.log("pass do not match");
       return;
     }
 
     setLoading(true);
 
     try {
-      setError('');
-      setSuccess('');
+      setError("");
+      setSuccess("");
       console.log(name, userName, email);
-      const response = await fetch('/api/signup', {
-        method: 'POST',
+      const response = await fetch("/api/signup", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({ name, userName, email, password }),
       });
@@ -41,15 +42,15 @@ export default function Signup() {
       setLoading(false);
 
       if (response.ok) {
-        setError('');
-        setSuccess('Signup successful!');
+        setError("");
+        setSuccess("Signup successful!");
       } else {
-        setError(data.error || 'Signup failed! Please try again.');
+        setError(data.error || "Signup failed! Please try again.");
       }
     } catch (error) {
       setLoading(false);
       console.log(error);
-      setError('A user with this email already exists.');
+      setError("A user with this email already exists.");
     }
   };
 
@@ -73,19 +74,11 @@ export default function Signup() {
             <p className="m-0">{success}</p>
           </div>
         )}
-        {loading && (
-          <div className="absolute inset-0 flex items-center justify-center bg-white z-10">
-            <div className="three-body">
-              <div className="three-body__dot"></div>
-              <div className="three-body__dot"></div>
-              <div className="three-body__dot"></div>
-            </div>
-          </div>
-        )}
+        {loading && <Loader />}
         <div className="flex flex-col gap-3">
           <span className="font-medium text-[40px]">Sign Up</span>
           <span className="text-[#141718] text-[16px]">
-            Already have an account?{' '}
+            Already have an account?{" "}
             <a href="/login" className="text-[#155EEF]">
               Sign In
             </a>
