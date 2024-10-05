@@ -1,3 +1,6 @@
+import mongoose from "mongoose";
+const { Schema, models } = mongoose;
+
 const cartSchema = new Schema({
   items: [
     {
