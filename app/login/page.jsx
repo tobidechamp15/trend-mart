@@ -37,7 +37,7 @@ const Login = () => {
       const session = await getSession();
       console.log("Logged-in User Details:", session.user); // Log user details
 
-      // router.replace('home');
+      router.replace('home');
     } catch (error) {
       setError("Invalid Credentials");
       setLoader(false);
