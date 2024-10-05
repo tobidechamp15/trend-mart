@@ -92,7 +92,7 @@ const ProductsListing = () => {
             {products.map((product, index) => (
               <div
                 key={index}
-                className="border border-blue-200 bg-white rounded-lg shadow-md p-4 transition-transform duration-300 hover:scale-105 hover:shadow-lg cursor-pointer flex flex-col items-center"
+                className="border border-blue-200 bg-white rounded-lg shadow-md p-4 transition-transform duration-300 hover:scale-105 hover:shadow-lg cursor-pointer flex flex-col items-center justify-between"
                 style={{ maxWidth: "220px" }}
               >
                 <img
