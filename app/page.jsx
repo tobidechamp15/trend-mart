@@ -1,5 +1,5 @@
-"use client ";
-import Link from "next/link";
+'use client ';
+import Link from 'next/link';
 
 export default function Home() {
   return (
@@ -11,9 +11,9 @@ export default function Home() {
           Discover the best products for your daily needs at unbeatable prices.
         </p>
         <Link href="/home">
-          <a className="bg-white text-blue-600 font-semibold py-3 px-8 rounded-lg hover:bg-gray-200 transition duration-300">
+          <span className="bg-white text-red-600 font-semibold py-3 px-8 rounded-lg hover:bg-gray-200 transition duration-300">
             Shop Now
-          </a>
+          </span>
         </Link>
       </section>
 
@@ -107,7 +107,7 @@ export default function Home() {
             className="text-gray-400 hover:text-white transition duration-200"
           >
             Privacy Policy
-          </a>{" "}
+          </a>{' '}
           |
           <a
             href="#"
