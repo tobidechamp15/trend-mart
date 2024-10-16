@@ -34,7 +34,9 @@ const ProductsListing = () => {
 
   // Function to handle adding a product to the cart
   const handleAddToCart = async (product) => {
-    // Validate that user is authenticated
+    console.log(product);
+
+    // Validate that the user is authenticated
     if (!session || !session.user?.email) {
       console.error('User is not authenticated');
       alert('You must be logged in to add products to the cart.');
@@ -49,6 +51,7 @@ const ProductsListing = () => {
     }
 
     try {
+      // Perform the API call to add the product to the cart
       const res = await fetch('/api/cart/add', {
         method: 'POST',
         headers: {
@@ -56,21 +59,22 @@ const ProductsListing = () => {
         },
         body: JSON.stringify({
           email: session.user.email,
-          productId: product.id, // Ensure product.id is the correct identifier
+          productId: product.id, // Ensure this is the correct identifier
           quantity: 1,
           price: product.price,
           itemName: product.title,
         }),
       });
 
-      // Handle response and potential errors
+      // Check if the response is okay, otherwise throw an error
       if (!res.ok) {
-        const errorData = await res.json(); // Read the error body
+        const errorData = await res.json(); // Extract error message
         throw new Error(
           `Failed to add product to cart: ${errorData.error || res.statusText}`,
         );
       }
 
+      // Handle successful addition
       const data = await res.json();
       console.log('Product added to cart:', data);
       alert('Product added to cart successfully!');
