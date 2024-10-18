@@ -1,3 +1,4 @@
+'use client';
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -17,14 +18,13 @@ const Navbar = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
 
-  const handleLogOut = () => {
-    localStorage.removeItem('userId');
-    navigate('/');
-  };
+  // const handleLogOut = () => {
+  //   localStorage.removeItem('userId');
+  //   navigate('/');
+  // };
 
   return (
     <div className="flex justify-between items-center py-6 w-full bg-white shadow-lg px-6">
-      {/* Logo */}
       <Link
         href="/"
         className="text-3xl font-bold text-blue-600 hover:text-blue-700 transition duration-300 font-[Pacifico]"

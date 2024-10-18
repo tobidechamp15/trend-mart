@@ -29,8 +29,9 @@ export const authOptions = {
             throw new Error('Invalid password'); // Incorrect password
           }
 
+          // Return user object including ID (this will be available in the JWT and session callbacks)
           return {
-            id: user.id,
+            id: user._id, // Using MongoDB's ObjectId (_id) as user id
             email: user.email,
             name: user.name,
             userName: user.userName,
@@ -41,12 +42,31 @@ export const authOptions = {
       },
     }),
   ],
+
   session: {
-    strategy: 'jwt',
+    strategy: 'jwt', // Use JWT strategy to persist user info in the session
   },
+
   secret: process.env.NEXTAUTH_SECRET,
+
   pages: {
-    signIn: '/login',
+    signIn: '/login', // Customize sign-in page
+  },
+
+  callbacks: {
+    async jwt({ token, user }) {
+      // If user exists (on initial login), attach user ID to the token
+      if (user) {
+        token.id = user.id; // Store the user ID in the token
+      }
+      return token;
+    },
+
+    async session({ session, token }) {
+      // Attach the user ID from token to session object
+      session.user.id = token.id; // Add the user ID to the session user object
+      return session;
+    },
   },
 };
 

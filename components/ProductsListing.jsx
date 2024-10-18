@@ -5,6 +5,8 @@ import { useSession } from 'next-auth/react';
 import fetchProductsFromAPI from '@/utils/fetchProducts';
 import { useRouter } from 'next/navigation';
 import Loader from './Loader';
+import { addDoc, collection, getDocs } from 'firebase/firestore';
+import { db } from '@/firebase/firebase';
 
 const ProductsListing = () => {
   const [products, setProducts] = useState([]);
@@ -16,6 +18,7 @@ const ProductsListing = () => {
   const email = session?.user?.email; // Assuming session holds user data
 
   console.log(email);
+  //
   useEffect(() => {
     const fetchProducts = async () => {
       setIsLoading(true);
@@ -30,12 +33,10 @@ const ProductsListing = () => {
     };
 
     fetchProducts();
+    getCartItems();
   }, []);
-
   // Function to handle adding a product to the cart
   const handleAddToCart = async (product) => {
-    console.log(product);
-
     // Validate that the user is authenticated
     if (!session || !session.user?.email) {
       console.error('User is not authenticated');
@@ -50,39 +51,56 @@ const ProductsListing = () => {
       return;
     }
 
+    // Fetch user ID (from localStorage or session)
+    const userId = localStorage.getItem('userID'); // Replace this with Firebase Auth if necessary
+    if (!userId) {
+      console.error('No user ID found');
+      alert('An error occurred. Please log in again.');
+      return;
+    }
+
+    // Reference to the user's cart collection in Firestore
+    const userCartRef = collection(db, 'carts', userId, 'userCart'); // Reference to sub-collection under user's document
+
+    // Prepare the product details to be stored in the cart
+    const userCartDetails = {
+      productId: product.id, // Ensure this is the correct identifier
+      quantity: 1, // Starting with a quantity of 1
+      price: product.price,
+      itemName: product.title,
+    };
+
     try {
-      // Perform the API call to add the product to the cart
-      const res = await fetch('/api/cart/add', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          email: session.user.email,
-          productId: product.id, // Ensure this is the correct identifier
-          quantity: 1,
-          price: product.price,
-          itemName: product.title,
-        }),
-      });
-
-      // Check if the response is okay, otherwise throw an error
-      if (!res.ok) {
-        const errorData = await res.json(); // Extract error message
-        throw new Error(
-          `Failed to add product to cart: ${errorData.error || res.statusText}`,
-        );
-      }
-
-      // Handle successful addition
-      const data = await res.json();
-      console.log('Product added to cart:', data);
+      // Add product details to the user's cart in Firestore
+      const newDocRef = await addDoc(userCartRef, userCartDetails);
+      console.log('Product added to cart with ID: ', newDocRef.id);
       alert('Product added to cart successfully!');
     } catch (error) {
-      console.error('Error adding product to cart:', error.message);
-      alert(
-        'There was an error adding the product to the cart. Please try again.',
-      );
+      console.error('Error adding product to cart:', error);
+      alert('Failed to add product to cart. Please try again.');
+    }
+  };
+
+  const getCartItems = async () => {
+    try {
+      // Reference to the user's cart collection in Firestore
+      const userId = localStorage.getItem('userID'); // Replace this with Firebase Auth if necessary
+
+      const userCartRef = collection(db, 'carts', userId, 'userCart');
+
+      // Fetch all cart items from Firestore
+      const cartSnapshot = await getDocs(userCartRef);
+
+      // Map over the documents and return the data
+      const cartItems = cartSnapshot.docs.map((doc) => ({
+        id: doc.id, // Include the document ID for future reference (e.g., for updates or deletes)
+        ...doc.data(), // Spread the document data (like productId, price, etc.)
+      }));
+      console.log(cartItems);
+      return cartItems;
+    } catch (error) {
+      console.error('Error fetching cart items: ', error);
+      return [];
     }
   };
 
