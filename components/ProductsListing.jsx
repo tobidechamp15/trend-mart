@@ -5,7 +5,15 @@ import { useSession } from 'next-auth/react';
 import fetchProductsFromAPI from '@/utils/fetchProducts';
 import { useRouter } from 'next/navigation';
 import Loader from './Loader';
-import { addDoc, collection, getDocs } from 'firebase/firestore';
+import {
+  addDoc,
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  increment,
+  setDoc,
+} from 'firebase/firestore';
 import { db } from '@/firebase/firebase';
 
 const ProductsListing = () => {
@@ -58,22 +66,32 @@ const ProductsListing = () => {
       alert('An error occurred. Please log in again.');
       return;
     }
+    const productId = String(product.id);
 
     // Reference to the user's cart collection in Firestore
-    const userCartRef = collection(db, 'carts', userId, 'userCart'); // Reference to sub-collection under user's document
+    const userCartRef = doc(db, 'carts', userId, 'userCart', productId);
 
     // Prepare the product details to be stored in the cart
-    const userCartDetails = {
-      productId: product.id, // Ensure this is the correct identifier
-      quantity: 1, // Starting with a quantity of 1
-      price: product.price,
-      itemName: product.title,
-    };
+    // const userCartDetails = {
+    //   id: product.id, // Ensure this is the correct identifier
+    //   quantity: 1, // Starting with a quantity of 1
+    //   price: product.price,
+    //   itemName: product.title,
+    // };
 
     try {
       // Add product details to the user's cart in Firestore
-      const newDocRef = await addDoc(userCartRef, userCartDetails);
-      console.log('Product added to cart with ID: ', newDocRef.id);
+      const newDocRef = await setDoc(
+        userCartRef,
+        {
+          id: product.id,
+          itemName: product.title,
+          price: product.price,
+          quantity: increment(1), // Firestore increment function to handle quantity
+        },
+        { merge: true },
+      );
+      console.log('Product added/updated in cart.');
       alert('Product added to cart successfully!');
     } catch (error) {
       console.error('Error adding product to cart:', error);
@@ -86,7 +104,7 @@ const ProductsListing = () => {
       // Reference to the user's cart collection in Firestore
       const userId = localStorage.getItem('userID'); // Replace this with Firebase Auth if necessary
 
-      const userCartRef = collection(db, 'carts', userId, 'userCart');
+      const userCartRef = collection(db, 'carts', userId, 'userCart'); // Sub-collection under user's document
 
       // Fetch all cart items from Firestore
       const cartSnapshot = await getDocs(userCartRef);
