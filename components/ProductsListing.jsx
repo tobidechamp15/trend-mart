@@ -6,7 +6,7 @@ import fetchProductsFromAPI from '@/utils/fetchProducts';
 import { useRouter } from 'next/navigation';
 import Loader from './Loader';
 import { addDoc, collection, getDocs } from 'firebase/firestore';
-import { db, userId } from '@/firebase/firebase';
+import { db } from '@/firebase/firebase';
 
 const ProductsListing = () => {
   const [products, setProducts] = useState([]);
