@@ -13,7 +13,6 @@ const page = () => {
       setIsLoading(true); // Set loading to true before fetching
       try {
         const data = await fetchProductsFromAPI();
-        console.log(data, 'data fro api');
         setProducts(data);
       } catch (error) {
         console.error('Error fetching products:', error);
