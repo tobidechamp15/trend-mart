@@ -67,7 +67,7 @@ const Login = () => {
         <div className="flex flex-col gap-3 mb-5">
           <span className="font-medium text-[40px]">Sign In</span>
           <span className="text-[#141718] text-[16px]">
-            Do not have an account yet{' '}
+            Do not have an account yet?{' '}
             <a href="/signup" className="text-[#155EEF]">
               Sign Up
             </a>
