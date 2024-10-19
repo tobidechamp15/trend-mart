@@ -31,10 +31,10 @@ const Login = () => {
         setError('Invalid Credentials');
         return;
       }
-      // console.log(res.data);
+      //  (res.data);
       setSuccess('Login Successful');
       const session = await getSession();
-      console.log('Logged-in User Details:', session.user); // Log user details
+      'Logged-in User Details:', session.user; // Log user details
       localStorage.setItem('userID', session.user.id);
       navigate.replace('home');
     } catch (error) {

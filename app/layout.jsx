@@ -10,7 +10,7 @@ export const metadata = {
 
 async function RootLayout({ children }) {
   const conn = await connectMongoDB();
-  console.log(conn);
+  conn;
   return (
     <html lang="en">
       <body>

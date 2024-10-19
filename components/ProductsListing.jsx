@@ -25,8 +25,9 @@ const ProductsListing = () => {
   // Check if user is authenticated
   const email = session?.user?.email; // Assuming session holds user data
 
-  console.log(email);
+  email;
   //
+
   useEffect(() => {
     const fetchProducts = async () => {
       setIsLoading(true);
@@ -91,8 +92,9 @@ const ProductsListing = () => {
         },
         { merge: true },
       );
-      console.log('Product added/updated in cart.');
+      ('Product added/updated in cart.');
       alert('Product added to cart successfully!');
+      getCartItems();
     } catch (error) {
       console.error('Error adding product to cart:', error);
       alert('Failed to add product to cart. Please try again.');
