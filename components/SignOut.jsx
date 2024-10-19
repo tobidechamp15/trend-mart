@@ -12,9 +12,6 @@ const Signout = () => {
   };
 
   // Ensure the router is ready before allowing sign-out
-  useEffect(() => {
-    if (!router.isReady) return; // Wait until router is fully loaded
-  }, [router.isReady]);
 
   return (
     <button onClick={handleSignOut} disabled={isSigningOut}>
