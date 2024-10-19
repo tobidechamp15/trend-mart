@@ -1,7 +1,6 @@
 'use client';
 import React, { useState } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars, faUser } from '@fortawesome/free-solid-svg-icons';
 import Sidebar from './Sidebar';
@@ -10,7 +9,6 @@ import { useSession } from 'next-auth/react';
 
 const Navbar = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const navigate = useRouter();
 
   const { data: session } = useSession();
   console.log(session, 'data');

@@ -2,7 +2,6 @@
 import { useState } from 'react';
 import Image from 'next/image';
 import { getSession } from 'next-auth/react';
-
 import logo from '/public/assets/Logo.svg';
 import authImg from '/public/assets/authImg.svg';
 import { useRouter } from 'next/navigation';
