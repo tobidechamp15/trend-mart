@@ -72,14 +72,6 @@ const ProductsListing = () => {
     // Reference to the user's cart collection in Firestore
     const userCartRef = doc(db, 'carts', userId, 'userCart', productId);
 
-    // Prepare the product details to be stored in the cart
-    // const userCartDetails = {
-    //   id: product.id, // Ensure this is the correct identifier
-    //   quantity: 1, // Starting with a quantity of 1
-    //   price: product.price,
-    //   itemName: product.title,
-    // };
-
     try {
       // Add product details to the user's cart in Firestore
       const newDocRef = await setDoc(
@@ -87,6 +79,7 @@ const ProductsListing = () => {
         {
           id: product.id,
           itemName: product.title,
+          image: product.image,
           price: product.price,
           quantity: increment(1), // Firestore increment function to handle quantity
         },

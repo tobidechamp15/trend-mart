@@ -10,6 +10,7 @@ import {
 import Sidebar from './Sidebar';
 import Signout from './SignOut';
 import { useSession } from 'next-auth/react';
+import CartIcon from './CartIcon';
 
 const Navbar = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -45,15 +46,7 @@ const Navbar = () => {
         ) : (
           <span className="font-medium text-red-500">Please log in.</span>
         )}
-        <div className="cart-section relative inline-block">
-          <FontAwesomeIcon
-            icon={faCartShopping}
-            className="font-medium text-3xl text-blue-600"
-          />
-          <span className="absolute top-0 right-0 transform translate-x-1/2 -translate-y-1/2 text-sm flex items-center justify-center w-6 h-6 bg-gray-200 rounded-full text-black">
-            2
-          </span>
-        </div>
+        <CartIcon />
       </div>
 
       {/* Mobile Menu Icon */}
