@@ -1,46 +1,46 @@
 import { db } from '@/firebase/firebase';
-import {
-  updateDoc,
-  deleteDoc,
-  doc,
-  collection,
-  setDoc,
-  getDoc,
-  serverTimestamp,
-} from 'firebase/firestore';
+import { doc, updateDoc, deleteDoc } from 'firebase/firestore';
 
-const userId = localStorage.getItem('userID');
-
-export const updateCartItem = async (id, change) => {
-  const cartRef = doc(db, 'userCarts', userId, id); //Direct reference to cart item
-
+// Function to update cart item quantity
+export const updateCartItem = async (cartItemId, updatedData) => {
   try {
-    const cartDoc = await getDoc(cartRef); //Get current document
-    if (cartDoc.exists()) {
-      await updateDoc(cartRef, {
-        quantity: cartDoc.data().quantity + change.quantity,
-        updatedAt: serverTimestamp(), //Add timestamp for easy tracking of updates
-      });
-    } else {
-      //Handle case where item doesn't exist (e.g., add it)
-      console.warn(`Cart item with ID ${id} not found. Creating new item.`);
-      await setDoc(cartRef, {
-        quantity: change.quantity,
-        createdAt: serverTimestamp(),
-        updatedAt: serverTimestamp(),
-      });
-    }
+    let userId = localStorage.getItem('userID'); // or use Firebase Auth to get the user ID
+
+    if (!userId) throw new Error('User ID is not found'); // Ensure userId exists
+
+    // Convert userId and cartItemId to strings
+    userId = String(userId);
+    cartItemId = String(cartItemId);
+
+    // Reference to the specific cart item document in Firestore
+    const cartItemRef = doc(db, 'carts', userId, 'userCart', cartItemId);
+
+    // Update the document with the new data
+    await updateDoc(cartItemRef, updatedData);
   } catch (error) {
-    console.error('Error updating cart item:', error);
+    return `Error updating cart item: ${error.message}`; // Return error message
   }
 };
 
-export const removeCartItem = async (id) => {
-  const cartRef = doc(db, 'userCarts', userId, id);
-
+// Function to remove a cart item
+export const removeCartItem = async (cartItemId) => {
   try {
-    await deleteDoc(cartRef);
+    let userId = localStorage.getItem('userID'); // or use Firebase Auth to get the user ID
+
+    if (!userId) throw new Error('User ID is not found'); // Ensure userId exists
+
+    // Convert userId and cartItemId to strings
+    userId = String(userId);
+    cartItemId = String(cartItemId);
+
+    // Reference to the specific cart item document in Firestore
+    const cartItemRef = doc(db, 'carts', userId, 'userCart', cartItemId);
+
+    // Delete the document from Firestore
+    await deleteDoc(cartItemRef);
+
+    console.log('Cart item successfully removed!');
   } catch (error) {
-    console.error('Error removing cart item:', error);
+    return `Error updating cart item: ${error.message}`; // Return error message
   }
 };

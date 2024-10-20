@@ -1,12 +1,13 @@
 'use client';
 import getCartItems from '@/utils/GetCart';
-import { updateCartItem, removeCartItem } from '@/utils/CartActions'; // Assume these are the utility functions for updating and removing items
 import React, { useEffect, useState } from 'react';
-import Loader from './Loader';
+import Loader from './Loader'; // Assuming you have this function for removing an item
+import { removeCartItem, updateCartItem } from '@/utils/CartActions';
 
 const Cart = () => {
   const [cartItems, setCartItems] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState('');
 
   // Fetch Cart Items from Firestore
   useEffect(() => {
@@ -26,33 +27,54 @@ const Cart = () => {
   }, []);
 
   // Handle increasing the quantity of an item
-  const handleAddQuantity = async (id) => {
+  const handleAddQuantity = async (id, currentQuantity) => {
+    const newQuantity = currentQuantity + 1; // Increment quantity
+
+    // Update local state
     setCartItems((prevItems) =>
       prevItems.map((item) =>
-        item.id === id ? { ...item, quantity: item.quantity + 1 } : item,
+        item.id === id ? { ...item, quantity: newQuantity } : item,
       ),
     );
 
-    await updateCartItem(id, { quantity: 1 }); // Update quantity in Firestore
+    try {
+      // Call updateCartItem function to update the quantity in Firestore
+      await updateCartItem(id, { quantity: newQuantity });
+    } catch (error) {
+      console.error('Error updating quantity: ', error);
+    }
   };
 
   // Handle decreasing the quantity of an item
-  const handleReduceQuantity = async (id) => {
-    setCartItems((prevItems) =>
-      prevItems.map((item) =>
-        item.id === id && item.quantity > 1
-          ? { ...item, quantity: item.quantity - 1 }
-          : item,
-      ),
-    );
+  const handleReduceQuantity = async (id, currentQuantity) => {
+    if (currentQuantity > 1) {
+      const newQuantity = currentQuantity - 1; // Decrement quantity
 
-    await updateCartItem(id, { quantity: -1 }); // Update quantity in Firestore
+      // Update local state
+      setCartItems((prevItems) =>
+        prevItems.map((item) =>
+          item.id === id ? { ...item, quantity: newQuantity } : item,
+        ),
+      );
+
+      try {
+        // Call updateCartItem function to update the quantity in Firestore
+        await updateCartItem(id, { quantity: newQuantity });
+      } catch (error) {
+        console.error('Error updating quantity: ', error);
+      }
+    }
   };
 
   // Handle removing an item from the cart
   const handleRemoveItem = async (id) => {
     setCartItems((prevItems) => prevItems.filter((item) => item.id !== id));
-    await removeCartItem(id); // Remove item from Firestore
+    try {
+      await removeCartItem(id); // Remove item from Firestore
+    } catch (error) {
+      console.log(error);
+      setError(error.message);
+    }
   };
 
   if (isLoading) {
@@ -93,14 +115,15 @@ const Cart = () => {
 
                 <div className="flex items-center space-x-2">
                   <button
-                    onClick={() => handleReduceQuantity(item.id)}
+                    onClick={() => handleReduceQuantity(item.id, item.quantity)}
                     className="bg-gray-300 text-black px-3 py-1 rounded-full hover:bg-gray-400"
+                    disabled={item.quantity <= 1} // Disable if quantity is 1 or less
                   >
                     -
                   </button>
                   <span className="text-lg text-blue-700">{item.quantity}</span>
                   <button
-                    onClick={() => handleAddQuantity(item.id)}
+                    onClick={() => handleAddQuantity(item.id, item.quantity)}
                     className="bg-blue-600 text-white px-3 py-1 rounded-full hover:bg-blue-700"
                   >
                     +
