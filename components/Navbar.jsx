@@ -22,41 +22,71 @@ const Navbar = () => {
   };
 
   return (
-    <div className="flex justify-between items-center py-6 w-full bg-white shadow-lg px-6">
+    <div className="flex justify-between items-center py-4 w-full bg-white shadow-md px-4 lg:px-8">
+      {/* Logo Section */}
       <Link
         href="/"
         className="text-3xl font-bold text-blue-600 hover:text-blue-700 transition duration-300 font-[Pacifico]"
+        aria-label="Go to TrendMart homepage"
       >
         TrendMart
       </Link>
 
-      {/* User Logout Section */}
-      <div className="hidden md:flex items-center gap-3 cursor-pointer text-lg font-medium text-red-500 hover:text-red-700 transition duration-300">
-        <FontAwesomeIcon
-          icon={faUser}
-          className="text-3xl text-blue-600 hover:text-blue-700"
-        />
-        <Signout />
+      {/* Main Navigation Links */}
+      <div className="hidden lg:flex gap-8 text-lg font-medium text-gray-800">
+        <Link href="/" className="hover:text-blue-600 transition duration-300">
+          Home
+        </Link>
+        <Link
+          href="/home"
+          className="hover:text-blue-600 transition duration-300"
+        >
+          Shop
+        </Link>
+        <Link
+          href="/about"
+          className="hover:text-blue-600 transition duration-300"
+        >
+          About
+        </Link>
+        <Link
+          href="/contact"
+          className="hover:text-blue-600 transition duration-300"
+        >
+          Contact
+        </Link>
       </div>
 
-      {/* User Authentication Status */}
-      <div className="hidden  md:flex gap-3 text-sm text-gray-800">
+      {/* Authentication and Cart Section */}
+      <div className="flex justify-center items-center gap-6">
+        {/* Display User Status */}
         {session ? (
-          <span className="font-medium text-blue-600">{session.user.name}</span>
+          <div className="hidden lg:flex items-center gap-3 text-blue-600 font-medium">
+            <FontAwesomeIcon icon={faUser} className="text-xl" />
+            <span>{session.user.name}</span>
+          </div>
         ) : (
-          <span className="font-medium text-red-500">Please log in.</span>
+          <Link
+            href="/login"
+            className="hidden lg:flex text-red-500 hover:text-red-600 transition duration-300"
+          >
+            Log in
+          </Link>
         )}
+
+        {/* Cart Icon */}
         <CartIcon />
+
+        {/* Mobile Menu Toggle */}
+        <FontAwesomeIcon
+          icon={faBars}
+          onClick={toggleSidebar}
+          className="lg:hidden text-2xl text-blue-600 hover:text-blue-700 transition duration-300 cursor-pointer"
+          aria-label="Open menu"
+        />
       </div>
 
-      {/* Mobile Menu Icon */}
-      <FontAwesomeIcon
-        icon={faBars}
-        onClick={toggleSidebar}
-        className="block md:hidden text-3xl text-blue-600 hover:text-blue-700 transition duration-300"
-      />
-
-      {/* Sidebar for Mobile */}
+      {/* Sidebar for Mobile Navigation */}
       <Sidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
     </div>
   );
