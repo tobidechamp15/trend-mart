@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faBars,
   faCartShopping,
+  faTimes,
   faUser,
 } from '@fortawesome/free-solid-svg-icons';
 import Sidebar from './Sidebar';
@@ -38,7 +39,7 @@ const Navbar = () => {
           Home
         </Link>
         <Link
-          href="/home"
+          href="/shop"
           className="hover:text-blue-600 transition duration-300"
         >
           Shop
@@ -78,16 +79,26 @@ const Navbar = () => {
         <CartIcon />
 
         {/* Mobile Menu Toggle */}
-        <FontAwesomeIcon
-          icon={faBars}
-          onClick={toggleSidebar}
-          className="lg:hidden text-2xl text-blue-600 hover:text-blue-700 transition duration-300 cursor-pointer"
-          aria-label="Open menu"
-        />
+        {isSidebarOpen ? (
+          <FontAwesomeIcon
+            icon={faTimes}
+            className="text-blue-600 text-2xl hover:text-gray-400 transition duration-300"
+            onClick={toggleSidebar}
+          />
+        ) : (
+          <FontAwesomeIcon
+            icon={faBars}
+            onClick={toggleSidebar}
+            className="lg:hidden text-2xl text-blue-600 hover:text-blue-700 transition duration-300 cursor-pointer"
+            aria-label="Open menu"
+          />
+        )}
       </div>
 
       {/* Sidebar for Mobile Navigation */}
-      <Sidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
+      {isSidebarOpen && (
+        <Sidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
+      )}
     </div>
   );
 };

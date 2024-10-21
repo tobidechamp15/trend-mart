@@ -1,22 +1,71 @@
-'use client';
-import React from 'react';
-// import '../app/globals.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {
+  faTimes,
+  faHome,
+  faShoppingBag,
+  faInfoCircle,
+  faEnvelope,
+  faUser,
+} from '@fortawesome/free-solid-svg-icons';
+import Link from 'next/link';
 
-const SideBar = () => {
+const Sidebar = ({ isOpen, toggleSidebar }) => {
   return (
-    <div className="flex z-10 flex-col text-white fixed h-screen w-full gap-4 bg-[#1A1A1A] pt-[30px] px-3 top-0 left-0 md:hidden ">
-      <section className="flex flex-col md:hidden side-items">
-        <span>Home</span>
-        <span>About</span>
-        <span>Project</span>
-        <span>Services</span>
-        <span>Resume</span>
-      </section>
-      <section className="contact-item md:hidden flex border-[#4FC3F7] py-[18px] px-[50px] rounded-[75px] transition duration-300 ease-in-out transform hover:bg-[#4FC3F7] hover:scale-105">
-        Contact Me
-      </section>
+    <div
+      className={`fixed top-0 left-0 h-full w-64 bg-gray-900 text-white transform ${
+        isOpen ? 'translate-x-0' : '-translate-x-full'
+      } transition-transform duration-300 ease-in-out z-50 shadow-lg`}
+    >
+      {/* Close Button */}
+      <div className="flex justify-end p-4">
+        <button onClick={toggleSidebar} aria-label="Close Sidebar">
+          <FontAwesomeIcon
+            icon={faTimes}
+            className="text-white text-2xl hover:text-gray-400 transition duration-300"
+          />
+        </button>
+      </div>
+
+      {/* Sidebar Links */}
+      <nav className="flex flex-col gap-6 mt-10 px-6">
+        <Link
+          href="/"
+          className="flex items-center gap-3 text-lg hover:text-gray-400 transition duration-300"
+        >
+          <FontAwesomeIcon icon={faHome} className="text-xl" />
+          <span>Home</span>
+        </Link>
+        <Link
+          href="/shop"
+          className="flex items-center gap-3 text-lg hover:text-gray-400 transition duration-300"
+        >
+          <FontAwesomeIcon icon={faShoppingBag} className="text-xl" />
+          <span>Shop</span>
+        </Link>
+        <Link
+          href="/about"
+          className="flex items-center gap-3 text-lg hover:text-gray-400 transition duration-300"
+        >
+          <FontAwesomeIcon icon={faInfoCircle} className="text-xl" />
+          <span>About</span>
+        </Link>
+        <Link
+          href="/contact"
+          className="flex items-center gap-3 text-lg hover:text-gray-400 transition duration-300"
+        >
+          <FontAwesomeIcon icon={faEnvelope} className="text-xl" />
+          <span>Contact</span>
+        </Link>
+        <Link
+          href="/profile"
+          className="flex items-center gap-3 text-lg hover:text-gray-400 transition duration-300"
+        >
+          <FontAwesomeIcon icon={faUser} className="text-xl" />
+          <span>Profile</span>
+        </Link>
+      </nav>
     </div>
   );
 };
 
-export default SideBar;
+export default Sidebar;

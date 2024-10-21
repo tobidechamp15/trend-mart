@@ -36,7 +36,7 @@ const Login = () => {
       const session = await getSession();
       'Logged-in User Details:', session.user; // Log user details
       localStorage.setItem('userID', session.user.id);
-      navigate.replace('home');
+      navigate.replace('shop');
     } catch (error) {
       setLoader(false);
       navigate.replace('login');

@@ -83,7 +83,7 @@ const Cart = () => {
 
   return (
     <div className="bg-white min-h-screen py-10">
-      <div className="container mx-auto">
+      <div className="container mx-auto px-4">
         <h1 className="text-4xl font-bold text-blue-600 text-center mb-8">
           Your Cart
         </h1>
@@ -95,15 +95,16 @@ const Cart = () => {
             {cartItems.map((item) => (
               <div
                 key={item.id}
-                className="flex items-center justify-between p-4 border rounded-lg shadow-md bg-blue-50"
+                className="flex flex-col sm:flex-row items-center justify-between p-4 border rounded-lg shadow-md bg-blue-50"
               >
-                <div className="flex items-center">
+                {/* Product Image and Info */}
+                <div className="flex flex-col sm:flex-row items-center w-full sm:w-1/2">
                   <img
                     src={item.image || '/placeholder.png'}
                     alt={item.name}
-                    className="w-16 h-16 rounded-md"
+                    className="w-20 h-20 sm:w-16 sm:h-16 rounded-md"
                   />
-                  <div className="ml-4">
+                  <div className="ml-4 mt-2 sm:mt-0">
                     <h2 className="text-lg font-semibold text-blue-700">
                       {item.name}
                     </h2>
@@ -113,15 +114,18 @@ const Cart = () => {
                   </div>
                 </div>
 
-                <div className="flex items-center space-x-2">
+                {/* Quantity Controls */}
+                <div className="flex items-center mt-4 sm:mt-0 sm:space-x-2">
                   <button
                     onClick={() => handleReduceQuantity(item.id, item.quantity)}
                     className="bg-gray-300 text-black px-3 py-1 rounded-full hover:bg-gray-400"
-                    disabled={item.quantity <= 1} // Disable if quantity is 1 or less
+                    disabled={item.quantity <= 1}
                   >
                     -
                   </button>
-                  <span className="text-lg text-blue-700">{item.quantity}</span>
+                  <span className="text-lg text-blue-700 mx-3">
+                    {item.quantity}
+                  </span>
                   <button
                     onClick={() => handleAddQuantity(item.id, item.quantity)}
                     className="bg-blue-600 text-white px-3 py-1 rounded-full hover:bg-blue-700"
@@ -130,7 +134,8 @@ const Cart = () => {
                   </button>
                 </div>
 
-                <div className="text-right">
+                {/* Total Price and Remove Button */}
+                <div className="flex flex-col text-right sm:w-1/4 mt-4 sm:mt-0">
                   <p className="text-lg text-blue-600 font-semibold">
                     Total: ${(item.price * item.quantity).toFixed(2)}
                   </p>

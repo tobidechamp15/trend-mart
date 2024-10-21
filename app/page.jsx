@@ -10,7 +10,7 @@ export default function Home() {
         <p className="text-lg mb-8">
           Discover the best products for your daily needs at unbeatable prices.
         </p>
-        <Link href="/home">
+        <Link href="/shop">
           <span className="bg-white text-red-600 font-semibold py-3 px-8 rounded-lg hover:bg-gray-200 transition duration-300">
             Shop Now
           </span>
