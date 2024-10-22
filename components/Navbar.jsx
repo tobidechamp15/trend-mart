@@ -23,7 +23,7 @@ const Navbar = () => {
   };
 
   return (
-    <div className="flex justify-between items-center py-4 w-full bg-white shadow-md px-4 lg:px-8">
+    <div className="flex  justify-between items-center py-4 w-full bg-white shadow-md px-4 lg:px-8">
       {/* Logo Section */}
       <Link
         href="/"
