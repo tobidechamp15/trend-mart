@@ -163,3 +163,10 @@ const Cart = () => {
 };
 
 export default Cart;
+
+// azzeez 30k 16th
+// ayanfe 60k 16th
+// dollipi 20k 14th
+
+// dollipi 23500 13th
+// azzeez 10000 10th
