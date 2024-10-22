@@ -89,7 +89,14 @@ const Cart = () => {
         </h1>
 
         {cartItems.length === 0 ? (
-          <p className="text-center text-gray-500">Your cart is empty.</p>
+          <div className="flex flex-col items-center justify-center py-20">
+            <p className="text-center text-gray-500 text-xl mb-4">
+              Your cart is empty.
+            </p>
+            <a href="/shop" className="text-blue-500 hover:underline">
+              Browse Products
+            </a>
+          </div>
         ) : (
           <div className="space-y-4">
             {cartItems.map((item) => (
