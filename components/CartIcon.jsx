@@ -23,7 +23,7 @@ const CartIcon = () => {
     };
 
     fetchCartItems();
-  }, [cartItems]);
+  }, []);
 
   return (
     <Link
