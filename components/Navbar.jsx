@@ -12,18 +12,21 @@ import Sidebar from './Sidebar';
 import Signout from './SignOut';
 import { useSession } from 'next-auth/react';
 import CartIcon from './CartIcon';
+import { usePathname } from 'next/navigation'; // Import usePathname
 
 const Navbar = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-
   const { data: session } = useSession();
-  session, 'data';
+  const pathname = usePathname(); // Get current pathname
+
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
 
+  const isActive = (path) => pathname === path; // Helper function to check active status
+
   return (
-    <div className="flex  justify-between items-center py-4 w-full bg-white shadow-md px-4 lg:px-8">
+    <div className="flex justify-between items-center py-4 w-full bg-white shadow-md px-4 lg:px-8">
       {/* Logo Section */}
       <Link
         href="/"
@@ -35,24 +38,27 @@ const Navbar = () => {
 
       {/* Main Navigation Links */}
       <div className="hidden lg:flex gap-8 text-lg font-medium text-gray-800">
-        <Link href="/" className="hover:text-blue-600 transition duration-300">
+        <Link
+          href="/"
+          className={`hover:text-blue-600 transition duration-300 ${isActive('/') ? 'text-blue-600 font-bold border-b-2 border-blue-600' : ''}`}
+        >
           Home
         </Link>
         <Link
           href="/shop"
-          className="hover:text-blue-600 transition duration-300"
+          className={`hover:text-blue-600 transition duration-300 ${isActive('/shop') ? 'text-blue-600 font-bold border-b-2 border-blue-600' : ''}`}
         >
           Shop
         </Link>
         <Link
           href="/about"
-          className="hover:text-blue-600 transition duration-300"
+          className={`hover:text-blue-600 transition duration-300 ${isActive('/about') ? 'text-blue-600 font-bold border-b-2 border-blue-600' : ''}`}
         >
           About
         </Link>
         <Link
           href="/contact"
-          className="hover:text-blue-600 transition duration-300"
+          className={`hover:text-blue-600 transition duration-300 ${isActive('/contact') ? 'text-blue-600 font-bold border-b-2 border-blue-600' : ''}`}
         >
           Contact
         </Link>
