@@ -2,20 +2,16 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-  faBars,
-  faCartShopping,
-  faTimes,
-  faUser,
-} from '@fortawesome/free-solid-svg-icons';
+import { faBars, faTimes, faUser } from '@fortawesome/free-solid-svg-icons';
 import Sidebar from './Sidebar';
-import Signout from './SignOut';
 import { useSession } from 'next-auth/react';
 import CartIcon from './CartIcon';
 import { usePathname } from 'next/navigation'; // Import usePathname
+import Dropdown from './Dropdown';
 
 const Navbar = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [dropDown, setDropDown] = useState(false);
   const { data: session } = useSession();
   const pathname = usePathname(); // Get current pathname
 
@@ -23,6 +19,9 @@ const Navbar = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
 
+  const handleDropDown = () => {
+    setDropDown(!dropDown);
+  };
   const isActive = (path) => pathname === path; // Helper function to check active status
 
   return (
@@ -68,9 +67,15 @@ const Navbar = () => {
       <div className="flex justify-center items-center gap-6">
         {/* Display User Status */}
         {session ? (
-          <div className="hidden lg:flex items-center gap-3 text-blue-600 font-medium">
-            <FontAwesomeIcon icon={faUser} className="text-xl" />
-            <span>{session.user.name}</span>
+          <div
+            className="hidden relative lg:flex items-center gap-3 text-blue-600 font-medium justify-center hover:bg-gray-200 px-2 py-1 rounded-full"
+            onClick={handleDropDown}
+          >
+            <div className="flex gap-2 items-center justify-center cursor-pointer ">
+              <FontAwesomeIcon icon={faUser} className="text-xl" />
+              <span>Hi, {session.user.name}</span>
+            </div>
+            {dropDown && <Dropdown />}
           </div>
         ) : (
           <Link

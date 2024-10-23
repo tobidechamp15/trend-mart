@@ -7,6 +7,7 @@ import authImg from '/public/assets/authImg.svg';
 import { useRouter } from 'next/navigation';
 import { signIn } from 'next-auth/react';
 import Loader from '@/components/Loader';
+import Link from 'next/link';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -45,9 +46,12 @@ const Login = () => {
   };
   return (
     <div className="flex w-full bg-white text-black overflow-auto">
-      <div className="w-1/2 h-screen bg-[#c7e0e5] hidden md:flex justify-evenly items-center flex-col ">
+      <Link
+        href="/"
+        className="w-1/2 h-screen bg-[#c7e0e5] hidden md:flex justify-evenly items-center flex-col "
+      >
         <Image src={logo} alt="logo" /> <Image src={authImg} alt="authImg" />
-      </div>
+      </Link>
       <form
         onSubmit={handleSubmit}
         className="flex gap-[32px] items-center flex-col w-full h-screen pt-[100px]"
