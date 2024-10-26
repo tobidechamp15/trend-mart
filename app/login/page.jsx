@@ -114,3 +114,6 @@ const Login = () => {
 };
 
 export default Login;
+
+// logo make it same
+//home redirecting
